@@ -6,3 +6,7 @@ firmware = "../.pio/build/mhetesp32devkit/firmware.bin"
 [simulator]
 delay = 0.001
 stopOn = "break"
+
+[[net.forward]]
+from = "localhost:8180"
+to = "target:80" # WebServer
