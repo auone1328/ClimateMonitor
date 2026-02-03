@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 TOPIC = "cs2026_climate_7A3B9F2C/#"  
 
 def on_message(client, userdata, msg):
-    print(f"✓ Получено: {msg.topic} -> {msg.payload.decode()}")
+    print(f"Получено: {msg.topic} -> {msg.payload.decode()}")
 
 client = mqtt.Client()
 client.connect("test.mosquitto.org", 1883)
