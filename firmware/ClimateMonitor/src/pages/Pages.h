@@ -1,4 +1,6 @@
-#include <WebServer.h>
+#ifndef PAGES_H
+#define PAGES_H
 
-extern WebServer server;
-void sendWelcomePageHtml();
+String getSetupPageHtml();
+
+#endif
