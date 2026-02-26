@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "..\Persistence\Persistence.csproj", "{B1F9699A-4754-4489-81B7-B24914BAC03F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{1BBF454F-AF2D-4F72-A0BA-A83FF7E67F45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "..\Application\Application.csproj", "{8295AD16-BAB7-4D4F-82BE-D450C668BF67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{B1F9699A-4754-4489-81B7-B24914BAC03F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1F9699A-4754-4489-81B7-B24914BAC03F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1F9699A-4754-4489-81B7-B24914BAC03F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BBF454F-AF2D-4F72-A0BA-A83FF7E67F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BBF454F-AF2D-4F72-A0BA-A83FF7E67F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BBF454F-AF2D-4F72-A0BA-A83FF7E67F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BBF454F-AF2D-4F72-A0BA-A83FF7E67F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8295AD16-BAB7-4D4F-82BE-D450C668BF67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8295AD16-BAB7-4D4F-82BE-D450C668BF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8295AD16-BAB7-4D4F-82BE-D450C668BF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8295AD16-BAB7-4D4F-82BE-D450C668BF67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
