@@ -1,63 +1,56 @@
-﻿using Infrastructure.Services;
+﻿using Application.DTO.Auth;
+using Application.Features.Auth.Login;
+using Application.Features.Auth.Logout;
+using Application.Features.Auth.Refresh;
+using Application.Features.Auth.Register;
 using Domain.Entities;
+using Infrastructure.Services;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using Application.DTO.Auth;
 
-namespace ClimatMonitorAPI.Controllers;
+namespace ClimateMonitorAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly JwtService _jwtService;
+    private readonly IMediator _mediator;
 
-    public AuthController(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        JwtService jwtService)
+    public AuthController(IMediator mediator)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _jwtService = jwtService;
+        _mediator = mediator;
     }
 
-    // POST: api/auth/register
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDTO model)
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
     {
-        var user = new User { UserName = model.Email, Email = model.Email };
-        var result = await _userManager.CreateAsync(user, model.Password);
-
-        if (result.Succeeded)
-        {
-            // Назначаем роль по умолчанию (например "User")
-            await _userManager.AddToRoleAsync(user, "User");
-
-            return Ok(new { Message = "User registered successfully" });
-        }
-
-        return BadRequest(result.Errors);
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 
-    // POST: api/auth/login
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDTO model)
+    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null)
-            return Unauthorized("Invalid login attempt");
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
 
-        if (!result.Succeeded)
-            return Unauthorized("Invalid login attempt");
-
-        var token = await _jwtService.GenerateJwtToken(user);
-
-        return Ok(new { Token = token });
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout([FromBody] LogoutCommand command)
+    {
+        await _mediator.Send(command);
+        return NoContent();
     }
 }

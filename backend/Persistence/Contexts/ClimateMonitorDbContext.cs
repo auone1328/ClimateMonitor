@@ -5,6 +5,8 @@ using Domain.Entities;
 
 namespace Persistence.Contexts
 {
+    //dotnet ef migrations add ImagesAdd --project Persistence --startup-project ClimateMonitorAPI
+    //dotnet ef database update --project Persistence --startup-project ClimateMonitorAPI
     public class ClimateMonitorDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DbSet<Building> Buildings { get; set; } = null!;
@@ -14,6 +16,7 @@ namespace Persistence.Contexts
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<AccessRight> AccessRights { get; set; } = null!;
         public DbSet<AuditLog> AuditLogs { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         public ClimateMonitorDbContext(DbContextOptions<ClimateMonitorDbContext> options) : base(options) { }
 
@@ -69,6 +72,25 @@ namespace Persistence.Contexts
 
             builder.Entity<AuditLog>()
                 .HasIndex(al => new { al.UserId, al.Timestamp });
+
+            builder.Entity<RefreshToken>()
+                .HasOne(rt => rt.User)
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.Token)
+                .IsUnique();
+
+            builder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.UserId);
+
+            builder.Entity<User>()
+                .HasMany(u => u.RefreshTokens)
+                .WithOne(rt => rt.User)
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

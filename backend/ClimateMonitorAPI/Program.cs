@@ -1,4 +1,7 @@
 ﻿
+using Application.Features.Auth.Login;
+using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Services;
@@ -8,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence.Contexts;
+using Persistence.Repositories;
 using System.Text;
 
 namespace ClimateMonitorAPI
@@ -76,6 +80,11 @@ namespace ClimateMonitorAPI
             .AddEntityFrameworkStores<ClimateMonitorDbContext>()
             .AddDefaultTokenProviders();
 
+            builder.Services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(Program).Assembly,
+                    typeof(LoginUserCommand).Assembly));
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -91,16 +100,18 @@ namespace ClimateMonitorAPI
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["SecretKey"] ?? throw new InvalidOperationException("JWT Key not found"))),
-                    ClockSkew = TimeSpan.Zero
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["SecretKey"] ?? throw new InvalidOperationException("JWT Key not found")))
                 };
             });
 
             builder.Services.AddAuthorization();
+            builder.Services.AddHttpContextAccessor();
 
             //Custom Services
-            builder.Services.AddScoped<JwtService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
+            //app
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -124,6 +135,10 @@ namespace ClimateMonitorAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(builder => builder.AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .AllowCredentials());
 
             app.UseHttpsRedirection();
 
