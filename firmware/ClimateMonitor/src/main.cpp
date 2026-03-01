@@ -33,10 +33,10 @@ void handleRoot() {
 }
 
 void handleSave() {
-    String ssid = server.arg("ssid");
-    String pass = server.arg("pass");
+    String ssid     = server.arg("ssid");
+    String pass     = server.arg("pass");
     String building = server.arg("building");
-    String room = server.arg("room");
+    String room     = server.arg("room");
 
     if (ssid.isEmpty() || building.isEmpty() || room.isEmpty()) {
         server.send(400, "text/plain", "Missing fields");
@@ -44,12 +44,21 @@ void handleSave() {
     }
 
     if (saveConfig(ssid, pass, building, room)) {
-        server.send(200, "text/html", "<h1>Saved! Rebooting...</h1>");
-        delay(1000);
+        // Генерируем JSON для QR
+        String qrJson = "{\"mac\":\"" + WiFi.macAddress() + 
+                       "\",\"building\":\"" + building + 
+                       "\",\"room\":\"" + room + 
+                       "\",\"secret\":\"" + config.registration_secret + "\"}";
+
+        String qrSvg = getQrSvg(qrJson);
+
+        server.send(200, "text/html", getQrPageHtml(qrSvg));      
+
+        delay(1000); 
         ESP.restart();
-    }
+    } 
     else {
-      server.send(500, "text/plain", "Save failed");
+        server.send(500, "text/plain", "Save failed");
     }
 }
 
@@ -113,9 +122,6 @@ void startStationMode() {
         if (wifiConnectAttempts >= 3) {  // после 3 неудач — снова AP
             startAPMode();
         } 
-        else {
-            startStationMode();  // retry
-        }
     }
 }
 

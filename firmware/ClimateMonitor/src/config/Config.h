@@ -10,6 +10,7 @@ struct DeviceConfig {
     String wifi_pass;
     String building_name;
     String room_name;
+    String registration_secret;
     bool isConfigured = false;
 };
 

@@ -23,13 +23,15 @@ void loadConfig() {
 bool saveConfig(const String& ssid, const String& pass, const String& building, const String& room) {
     prefs.begin("climate-cfg", false);
     
+    String secret = String((uint32_t)ESP.getEfuseMac(), HEX) + String(random(0xFFFFFF), HEX);
+    
     prefs.putString("wifi_ssid", ssid);
     prefs.putString("wifi_pass", pass);
     prefs.putString("building", building);
     prefs.putString("room", room);
-    
+    prefs.putString("secret", secret);
+
     bool success = prefs.getString("wifi_ssid", "") == ssid;
-    
     prefs.end();
     return success;
 }
