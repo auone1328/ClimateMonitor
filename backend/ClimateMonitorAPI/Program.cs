@@ -4,6 +4,7 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Domain.Entities;
 using Infrastructure;
+using Infrastructure.Filter;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -107,12 +108,24 @@ namespace ClimateMonitorAPI
             builder.Services.AddAuthorization();
             builder.Services.AddHttpContextAccessor();
 
+            builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
+
             //Custom Services
-            builder.Services.AddScoped<IJwtService, JwtService>();
+            //Services
+            builder.Services.AddScoped<IJwtService, JwtService>(); 
+            builder.Services.AddScoped<IUserContext, UserContext>();
+            //Repository
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+            builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+            builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+            builder.Services.AddScoped<IAccessRightRepository, AccessRightRepository>();  
 
             //app
             var app = builder.Build();
+
+            app.UseExceptionHandler();
 
             using (var scope = app.Services.CreateScope())
             {
