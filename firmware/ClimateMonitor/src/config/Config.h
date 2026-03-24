@@ -10,6 +10,7 @@ struct DeviceConfig {
     String wifi_pass;
     String building_name;
     String room_name;
+    String device_mac;
     String registration_secret;
     bool isConfigured = false;
 };
@@ -17,7 +18,7 @@ struct DeviceConfig {
 extern DeviceConfig config;
 
 void loadConfig();
-bool saveConfig(const String& ssid, const String& pass, const String& building, const String& room);
+bool saveConfig(const String& ssid, const String& pass, const String& building, const String& room, const String& mac);
 String lowerFormat(const String& str); 
 
 #endif

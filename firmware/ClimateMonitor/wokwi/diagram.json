@@ -1,17 +1,53 @@
 {
   "version": 1,
-  "author": "Uri Shaked",
+  "author": "Alexander Lazarenko",
   "editor": "wokwi",
   "parts": [
     { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -37.58, "left": -96.37, "attrs": {} },
-    { "type": "wokwi-dht22", "id": "dht1", "top": -32.2, "left": 40.16, "attrs": {} }
+    { "type": "wokwi-dht22", "id": "dht1", "top": -18.9, "left": 42.6, "attrs": {} },
+    { "type": "wokwi-mq2", "id": "mq2", "top": 70.2, "left": 42, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relayHeater", "top": -120, "left": 40, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relayCooler", "top": 9.8, "left": 105.6, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "heaterLamp",
+      "top": -138,
+      "left": 176.6,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "coolerLamp",
+      "top": -138,
+      "left": 224.6,
+      "attrs": { "color": "blue" }
+    },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": -6.9, "left": -290.6, "attrs": {} }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
     [ "dht1:VCC", "esp:3V3", "red", [ "v109.3", "h-170.36", "v-200.78" ] ],
     [ "dht1:SDA", "esp:15", "green", [ "v0" ] ],
-    [ "dht1:GND", "esp:GND.1", "black", [ "v99.7", "h-189.56", "v-66.38" ] ]
+    [ "dht1:GND", "esp:GND.1", "black", [ "v99.7", "h-189.56", "v-66.38" ] ],
+    [ "mq2:VCC", "esp:5V", "red", [ "v0" ] ],
+    [ "mq2:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "mq2:AO", "esp:34", "green", [ "v0" ] ],
+    [ "relayHeater:VCC", "esp:5V", "red", [ "v0" ] ],
+    [ "relayHeater:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "relayHeater:IN", "esp:2", "green", [ "v0" ] ],
+    [ "relayHeater:COM", "esp:5V", "red", [ "v0" ] ],
+    [ "relayHeater:NO", "heaterLamp:A", "green", [ "v0" ] ],
+    [ "heaterLamp:C", "esp:GND.1", "black", [ "v326.4", "h-283.36" ] ],
+    [ "relayCooler:VCC", "esp:5V", "red", [ "v0" ] ],
+    [ "relayCooler:GND", "esp:GND.2", "black", [ "v-67.6", "h-101.21" ] ],
+    [ "relayCooler:IN", "esp:4", "green", [ "v0" ] ],
+    [ "relayCooler:COM", "esp:5V", "red", [ "v0" ] ],
+    [ "relayCooler:NO", "coolerLamp:A", "green", [ "v0" ] ],
+    [ "coolerLamp:C", "esp:GND.2", "black", [ "h-18.8", "v-48", "h-216.41" ] ],
+    [ "gas1:VCC", "esp:3V3", "red", [ "h28.8", "v-48.9" ] ],
+    [ "gas1:GND", "esp:GND.1", "black", [ "h19.2", "v85.6" ] ],
+    [ "gas1:AOUT", "esp:34", "green", [ "h48", "v19.2" ] ]
   ],
   "dependencies": {}
 }

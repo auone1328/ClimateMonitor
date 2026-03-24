@@ -22,12 +22,6 @@ float readDhtTemperature() {
 
     //Getting temperature
     dht.temperature().getEvent(&event); 
-    if (isnan(event.temperature)) {
-        printf("Error reading temperature!\n");
-    }
-    else {
-        printf("Temperature: %.2f°C\n", event.temperature);
-    }
 
     return event.temperature;
 }
@@ -37,12 +31,6 @@ float readDhtHumidity() {
 
     //Getting humidity
     dht.humidity().getEvent(&event);
-    if (isnan(event.relative_humidity)) {
-        printf("Error reading humidity!\n");
-    }
-    else {
-        printf("Humidity: %.2f%\n", event.relative_humidity);
-    }
 
     return event.relative_humidity;
 }
