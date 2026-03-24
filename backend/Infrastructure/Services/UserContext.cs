@@ -26,7 +26,9 @@ namespace Infrastructure.Services
                 if (user == null || !user.Identity?.IsAuthenticated == true)
                     throw new UnauthorizedAccessException("User not authenticated");
 
-                var idClaim = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+                var idClaim = user.FindFirst("UserId")?.Value
+                    ?? user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                    ?? user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
                 if (!Guid.TryParse(idClaim, out var id))
                     throw new InvalidOperationException("Invalid user ID in token");
 
@@ -34,7 +36,8 @@ namespace Infrastructure.Services
             }
         }
 
-        public string? Email => _httpContextAccessor.HttpContext?.User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
+        public string? Email => _httpContextAccessor.HttpContext?.User.FindFirst("Email")?.Value
+            ?? _httpContextAccessor.HttpContext?.User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
 
         public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
     }

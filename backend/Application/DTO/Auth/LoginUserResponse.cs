@@ -9,6 +9,7 @@ namespace Application.DTO.Auth
 {
     public record LoginUserResponse(
         string AccessToken,
+        string RefreshToken,
         DateTime ExpiresAt
     );
 }

@@ -13,7 +13,8 @@ namespace Domain.Entities
         UpdateSchedule,
         RegisterDevice,
         UserLogin,
-        Other
+        Other,
+        ToggleCooler
     }
 
     public class AuditLog : BaseEntity

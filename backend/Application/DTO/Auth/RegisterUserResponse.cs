@@ -10,6 +10,7 @@ namespace Application.DTO.Auth
     public record RegisterUserResponse(
         Guid UserId,
         string Email,
-        string AccessToken
+        string AccessToken,
+        string RefreshToken
     );
 }

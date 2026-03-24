@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Auth.Refresh
 {
-    public record RefreshTokenCommand()
+    public record RefreshTokenCommand(string? RefreshToken)
     : IRequest<RefreshTokenResponse>;
 }

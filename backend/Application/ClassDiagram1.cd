@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Application.Features.AuditFeatures.GetByBuilding.GetAuditLogsQueryHandler" Collapsed="true">
+    <Position X="1.25" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAABAA=</HashCode>
+      <FileName>Features\AuditFeatures\GetByBuilding\GetAuditLogsQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.Auth.Login.LoginUserCommandHandler" Collapsed="true">
+    <Position X="1.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAgBAAAAAAAABAAAAAIAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\Auth\Login\LoginUserCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.Auth.Logout.LogoutCommandHandler" Collapsed="true">
+    <Position X="1.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAFAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\Auth\Logout\LogoutCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.Auth.Refresh.RefreshTokenCommandHandler" Collapsed="true">
+    <Position X="1.25" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAgFAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\Auth\Refresh\RefreshTokenCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.Auth.Register.RegisterUserCommandHandler" Collapsed="true">
+    <Position X="1.25" Y="5.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAgBAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\Auth\Register\RegisterUserCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.Create.CreateBuildingCommandHandler" Collapsed="true">
+    <Position X="6.25" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\Create\CreateBuildingCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.GetById.GetBuildingByIdQueryHandler" Collapsed="true">
+    <Position X="6.25" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\GetById\GetBuildingByIdQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.GetList.GetBuildingsQueryHandler" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\GetList\GetBuildingsQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.GetRole.GetBuildingRoleQueryHandler" Collapsed="true">
+    <Position X="6.25" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\GetRole\GetBuildingRoleQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.GetUsers.GetBuildingUsersQueryHandler" Collapsed="true">
+    <Position X="6.25" Y="5.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\GetUsers\GetBuildingUsersQueryHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.GrantAccess.GrantBuildingAccessCommandHandler" Collapsed="true">
+    <Position X="10.75" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\GrantAccess\GrantBuildingAccessCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.RemoveUser.RemoveBuildingUserCommandHandler" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\RemoveUser\RemoveBuildingUserCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Application.Features.BuildingFeatures.UpdateUserRole.UpdateBuildingUserRoleCommandHandler" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Features\BuildingFeatures\UpdateUserRole\UpdateBuildingUserRoleCommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

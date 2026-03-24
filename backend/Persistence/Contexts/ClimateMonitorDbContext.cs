@@ -17,6 +17,7 @@ namespace Persistence.Contexts
         public DbSet<AccessRight> AccessRights { get; set; } = null!;
         public DbSet<AuditLog> AuditLogs { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+        public DbSet<AccessInvite> AccessInvites { get; set; } = null!;
 
         public ClimateMonitorDbContext(DbContextOptions<ClimateMonitorDbContext> options) : base(options) { }
 
@@ -91,6 +92,28 @@ namespace Persistence.Contexts
                 .WithOne(rt => rt.User)
                 .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AccessInvite>()
+                .HasOne(ai => ai.Building)
+                .WithMany()
+                .HasForeignKey(ai => ai.BuildingId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AccessInvite>()
+                .HasOne(ai => ai.CreatedByUser)
+                .WithMany()
+                .HasForeignKey(ai => ai.CreatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<AccessInvite>()
+                .HasOne(ai => ai.UsedByUser)
+                .WithMany()
+                .HasForeignKey(ai => ai.UsedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<AccessInvite>()
+                .HasIndex(ai => ai.Token)
+                .IsUnique();
         }
     }
 }

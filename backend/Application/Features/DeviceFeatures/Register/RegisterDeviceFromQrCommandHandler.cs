@@ -39,18 +39,21 @@ namespace Application.Features.DeviceFeatures.Register
             RegisterDeviceFromQrCommand request, CancellationToken ct)
         {
             var userId = _userContext.UserId; // из JWT
+            var mac = NormalizeMac(request.MacAddress);
+            var buildingName = (request.BuildingName ?? string.Empty).Trim();
+            var roomName = (request.RoomName ?? string.Empty).Trim();
 
             //Проверяем, не зарегистрировано ли уже устройство
-            if (await _deviceRepo.ExistsByMacAsync(request.MacAddress))
+            if (await _deviceRepo.ExistsByMacAsync(mac))
                 throw new BadRequestException("Устройство с таким MAC уже зарегистрировано");
 
             //Создаём/находим Building
-            var building = await _buildingRepo.GetByNameAsync(request.BuildingName);
+            var building = await _buildingRepo.GetByNameAsync(buildingName);
             if (building == null)
             {
                 building = new Building
                 {
-                    Name = request.BuildingName,
+                    Name = buildingName,
                     CreatedByUserId = userId
                 };
                 await _buildingRepo.AddAsync(building);
@@ -59,7 +62,7 @@ namespace Application.Features.DeviceFeatures.Register
             //Создаём Room
             var room = new Room
             {
-                Name = request.RoomName,
+                Name = roomName,
                 BuildingId = building.Id,
                 TargetTemperature = 22.0f
             };
@@ -69,7 +72,7 @@ namespace Application.Features.DeviceFeatures.Register
             var device = new Device
             {
                 RoomId = room.Id,
-                MacAddress = request.MacAddress,
+                MacAddress = mac,
                 RegisteredAt = DateTime.UtcNow
             };
             await _deviceRepo.AddAsync(device);
@@ -85,6 +88,11 @@ namespace Application.Features.DeviceFeatures.Register
 
             return new RegisterDeviceFromQrResponse(
                 building.Id, room.Id, device.Id, building.Name, room.Name);
+        }
+
+        private static string NormalizeMac(string mac)
+        {
+            return mac.ToLowerInvariant().Replace(":", "").Replace("-", "");
         }
     }
 }

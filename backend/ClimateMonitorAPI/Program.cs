@@ -24,11 +24,19 @@ namespace ClimateMonitorAPI
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
             var jwtOptions = configuration.GetSection(nameof(JwtOptions));
+            var mqttOptions = configuration.GetSection(nameof(MqttOptions));
+            var cleanupOptions = configuration.GetSection(nameof(CleanupOptions));
             // Add services to the container.
 
             builder.Services.Configure<JwtOptions>(jwtOptions);
+            builder.Services.Configure<MqttOptions>(mqttOptions);
+            builder.Services.Configure<CleanupOptions>(cleanupOptions);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                });
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -115,12 +123,22 @@ namespace ClimateMonitorAPI
             //Services
             builder.Services.AddScoped<IJwtService, JwtService>(); 
             builder.Services.AddScoped<IUserContext, UserContext>();
+            builder.Services.AddScoped<IMqttPublisher, MqttPublisher>();
             //Repository
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
             builder.Services.AddScoped<IAccessRightRepository, AccessRightRepository>();  
+            builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+            builder.Services.AddScoped<IAccessInviteRepository, AccessInviteRepository>();
+
+            // MQTT
+            builder.Services.AddSingleton<Infrastructure.Services.IMqttClientAccessor, Infrastructure.Services.MqttClientAccessor>();
+            builder.Services.AddHostedService<Infrastructure.Services.MqttBackgroundService>();
+            builder.Services.AddHostedService<Infrastructure.Services.CleanupBackgroundService>();
 
             //app
             var app = builder.Build();

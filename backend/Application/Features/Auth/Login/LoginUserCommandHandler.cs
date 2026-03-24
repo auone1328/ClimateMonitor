@@ -65,7 +65,7 @@ namespace Application.Features.Auth.Login
             _httpContextAccessor?.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
             _logger.LogInformation("User is Logged (userId: {UserId}, email: {UserEmail})", user.Id, user.Email);
-            return new LoginUserResponse(accessToken, DateTime.UtcNow.AddMinutes(60));
+            return new LoginUserResponse(accessToken, refreshToken, DateTime.UtcNow.AddMinutes(60));
         }
     }
 }

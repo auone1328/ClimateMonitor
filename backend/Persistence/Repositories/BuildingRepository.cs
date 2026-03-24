@@ -21,6 +21,19 @@ namespace Persistence.Repositories
             return building;
         }
 
+        public async Task<Building?> GetByIdAsync(Guid id)
+        {
+            return await _context.Buildings.FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task<IReadOnlyList<Building>> GetForUserAsync(Guid userId)
+        {
+            return await _context.AccessRights
+                .Where(ar => ar.UserId == userId)
+                .Select(ar => ar.Building)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Building building)
         {
             await _context.Buildings.AddAsync(building);

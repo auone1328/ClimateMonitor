@@ -70,7 +70,7 @@ namespace Application.Features.Auth.Register
             _httpContextAccessor?.HttpContext?.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
             _logger.LogInformation("User is Registered (userId: {UserId}, email: {UserEmail})", user.Id, user.Email);
-            return new RegisterUserResponse(user.Id, user.Email!, accessToken);
+            return new RegisterUserResponse(user.Id, user.Email!, accessToken, refreshToken);
         }
     }
 }

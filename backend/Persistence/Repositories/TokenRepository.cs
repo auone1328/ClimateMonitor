@@ -40,7 +40,7 @@ namespace Persistence.Repositories
         public async Task RevokeRefreshTokenAsync(string token, string reason = "Manual revocation")
         {
             var refreshToken = await GetRefreshTokenAsync(token);
-            if (refreshToken == null || !refreshToken.RevokedAt.HasValue) return;
+            if (refreshToken == null || refreshToken.RevokedAt.HasValue) return;
 
             refreshToken.RevokedAt = DateTime.UtcNow;
 

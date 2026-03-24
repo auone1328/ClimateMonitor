@@ -10,6 +10,8 @@ namespace Application.Interfaces.Repositories
     public interface IBuildingRepository
     {
         Task<Building?> GetByNameAsync(string name);
+        Task<Building?> GetByIdAsync(Guid id);
+        Task<IReadOnlyList<Building>> GetForUserAsync(Guid userId);
         Task AddAsync(Building building);
     }
 }

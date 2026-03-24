@@ -40,9 +40,11 @@ namespace Application.Features.Auth.Refresh
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext == null) throw new InvalidOperationException("No HTTP context");
             
-            var refreshToken = httpContext.Request.Cookies["refreshToken"];
+            var refreshToken = request.RefreshToken;
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                refreshToken = httpContext.Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
-                throw new SecurityTokenException("Refresh token not found in cookies");
+                throw new SecurityTokenException("Refresh token not found");
 
             var oldAccessToken = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var principal = _tokenService.GetPrincipalFromExpiredToken(oldAccessToken);
@@ -83,7 +85,7 @@ namespace Application.Features.Auth.Refresh
             httpContext.Response.Cookies.Append("refreshToken", newRefreshToken, cookieOptions);
 
             _logger.LogInformation("Token is refreshed for (userId: {UserId}, email: {UserEmail})", user.Id, user.Email);
-            return new RefreshTokenResponse(newAccessToken);
+            return new RefreshTokenResponse(newAccessToken, newRefreshToken);
         }
     }
 }
