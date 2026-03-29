@@ -108,6 +108,8 @@ namespace Application.Features.MeasurementFeatures.Create
         private async Task ApplyAutoControlAsync(Device device, Measurement measurement)
         {
             var room = device.Room;
+            if (!room.AutoControlEnabled)
+                return;
             var target = room.TargetTemperature;
             const float hysteresis = 0.5f;
 

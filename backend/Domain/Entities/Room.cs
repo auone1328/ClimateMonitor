@@ -13,6 +13,7 @@ namespace Domain.Entities
         public Building Building { get; set; } = null!;
         public string? Description { get; set; }
         public float TargetTemperature { get; set; } = 22.0f;
+        public bool AutoControlEnabled { get; set; } = true;
         public ICollection<Device> Devices { get; set; } = new List<Device>();
     }
 }

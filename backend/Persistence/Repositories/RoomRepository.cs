@@ -44,5 +44,12 @@ namespace Persistence.Repositories
             room.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAutoControlEnabledAsync(Room room, bool enabled)
+        {
+            room.AutoControlEnabled = enabled;
+            room.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
     }
 }

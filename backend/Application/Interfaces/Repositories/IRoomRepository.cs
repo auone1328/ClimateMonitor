@@ -13,5 +13,6 @@ namespace Application.Interfaces.Repositories
         Task<IReadOnlyList<Room>> GetByBuildingIdAsync(Guid buildingId);
         Task AddAsync(Room room);
         Task UpdateTargetTemperatureAsync(Room room, float targetTemperature);
+        Task UpdateAutoControlEnabledAsync(Room room, bool enabled);
     }
 }

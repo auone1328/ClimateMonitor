@@ -68,9 +68,10 @@ namespace Persistence.Repositories
 
         public async Task UpdateAsync(AccessRight accessRight)
         {
-            accessRight.Building = null!;
-            accessRight.User = null!;
-            _context.AccessRights.Update(accessRight);
+            if (_context.Entry(accessRight).State == EntityState.Detached)
+                _context.AccessRights.Attach(accessRight);
+
+            _context.Entry(accessRight).Property(ar => ar.Role).IsModified = true;
             await _context.SaveChangesAsync();
         }
 

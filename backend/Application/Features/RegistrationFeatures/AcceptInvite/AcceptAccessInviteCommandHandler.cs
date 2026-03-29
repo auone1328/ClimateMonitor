@@ -40,9 +40,9 @@ namespace Application.Features.RegistrationFeatures.AcceptInvite
         {
             var invite = await _inviteRepo.GetByTokenAsync(request.Token);
             if (invite == null)
-                throw new BadRequestException("Invite not found");
-            if (invite.UsedAt.HasValue || invite.ExpiresAt <= DateTime.UtcNow)
-                throw new BadRequestException("Invite expired or already used");
+                throw new BadRequestException("Приглашение не найдено.");
+            if (invite.ExpiresAt <= DateTime.UtcNow)
+                throw new BadRequestException("Срок действия приглашения истек.");
 
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -64,7 +64,19 @@ namespace Application.Features.RegistrationFeatures.AcceptInvite
             {
                 var valid = await _userManager.CheckPasswordAsync(user, request.Password);
                 if (!valid)
-                    throw new BadRequestException("Invalid credentials");
+                    throw new BadRequestException("Неверный email или пароль.");
+            }
+
+            if (invite.UsedAt.HasValue)
+            {
+                if (invite.UsedByUserId == user.Id)
+                {
+                    var (existingAccessToken, existingRefreshToken) = await _jwtService.GenerateJwtTokensAsync(user);
+                    SetRefreshCookie(existingRefreshToken);
+                    return new RegisterUserResponse(user.Id, user.Email!, existingAccessToken, existingRefreshToken);
+                }
+
+                throw new BadRequestException("Приглашение уже использовано.");
             }
 
             if (!await _accessRightRepo.ExistsAsync(user.Id, invite.BuildingId))

@@ -30,14 +30,22 @@ namespace Application.Features.RegistrationFeatures.AcceptInvite
         {
             var invite = await _inviteRepo.GetByTokenAsync(request.Token);
             if (invite == null)
-                throw new BadRequestException("Invite not found");
-            if (invite.UsedAt.HasValue || invite.ExpiresAt <= DateTime.UtcNow)
-                throw new BadRequestException("Invite expired or already used");
+                throw new BadRequestException("Приглашение не найдено.");
+            if (invite.ExpiresAt <= DateTime.UtcNow)
+                throw new BadRequestException("Срок действия приглашения истек.");
 
             var userId = _userContext.UserId;
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                throw new BadRequestException("User not found");
+                throw new BadRequestException("Пользователь не найден.");
+
+            if (invite.UsedAt.HasValue)
+            {
+                if (invite.UsedByUserId == user.Id)
+                    return Unit.Value;
+
+                throw new BadRequestException("Приглашение уже использовано.");
+            }
 
             if (!await _accessRightRepo.ExistsAsync(user.Id, invite.BuildingId))
             {

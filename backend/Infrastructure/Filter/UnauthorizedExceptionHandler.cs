@@ -1,36 +1,30 @@
-﻿using Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Filter
 {
-    public sealed class BadRequestExceptionHandler : IExceptionHandler
+    public sealed class UnauthorizedExceptionHandler : IExceptionHandler
     {
         private readonly IProblemDetailsService _problemDetails;
 
-        public BadRequestExceptionHandler(IProblemDetailsService problemDetails)
+        public UnauthorizedExceptionHandler(IProblemDetailsService problemDetails)
         {
             _problemDetails = problemDetails;
         }
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken ct)
         {
-            if (exception is not BadRequestException bre) return false;
+            if (exception is not UnauthorizedAccessException uae) return false;
 
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             httpContext.Response.ContentType = "application/problem+json; charset=utf-8";
 
             var problem = new ProblemDetails
             {
-                Status = 400,
-                Title = "Ошибка запроса",
-                Detail = bre.Message
+                Status = 401,
+                Title = "Не авторизован",
+                Detail = string.IsNullOrWhiteSpace(uae.Message) ? "Недостаточно прав для выполнения операции." : uae.Message
             };
 
             await _problemDetails.WriteAsync(new() { HttpContext = httpContext, ProblemDetails = problem });

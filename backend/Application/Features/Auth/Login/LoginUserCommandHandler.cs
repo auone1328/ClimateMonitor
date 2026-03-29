@@ -42,14 +42,14 @@ namespace Application.Features.Auth.Login
             if (user == null) 
             {
                 _logger.LogError("Invalid credentials");
-                throw new UnauthorizedAccessException("Invalid credentials");
+                throw new UnauthorizedAccessException("Неверный email или пароль.");
             }
                 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
             if (!result.Succeeded) 
             {
                 _logger.LogError("Invalid credentials");
-                throw new UnauthorizedAccessException("Invalid credentials");
+                throw new UnauthorizedAccessException("Неверный email или пароль.");
             }
               
             var (accessToken, refreshToken) = await _tokenService.GenerateJwtTokensAsync(user);

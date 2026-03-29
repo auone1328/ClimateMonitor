@@ -117,7 +117,9 @@ namespace ClimateMonitorAPI
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<UnauthorizedExceptionHandler>();
             builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
             //Custom Services
             //Services

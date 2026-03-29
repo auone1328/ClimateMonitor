@@ -57,7 +57,7 @@ namespace Persistence.Contexts
                 .HasOne(al => al.User)
                 .WithMany(u => u.AuditLogs)
                 .HasForeignKey(al => al.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AuditLog>()
                 .HasOne(al => al.Room)
@@ -103,13 +103,13 @@ namespace Persistence.Contexts
                 .HasOne(ai => ai.CreatedByUser)
                 .WithMany()
                 .HasForeignKey(ai => ai.CreatedByUserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AccessInvite>()
                 .HasOne(ai => ai.UsedByUser)
                 .WithMany()
                 .HasForeignKey(ai => ai.UsedByUserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AccessInvite>()
                 .HasIndex(ai => ai.Token)

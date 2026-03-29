@@ -36,6 +36,7 @@ namespace Application.Features.RoomFeatures.SetTargetTemperature
             if (role != AccessRole.Admin && role != AccessRole.User)
                 throw new BadRequestException("Access denied");
 
+            room.AutoControlEnabled = true;
             await _roomRepo.UpdateTargetTemperatureAsync(room, request.TargetTemperature);
 
             await _auditLogRepo.AddAsync(new AuditLog

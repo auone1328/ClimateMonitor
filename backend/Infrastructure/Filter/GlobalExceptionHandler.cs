@@ -1,36 +1,33 @@
-﻿using Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Filter
 {
-    public sealed class BadRequestExceptionHandler : IExceptionHandler
+    public sealed class GlobalExceptionHandler : IExceptionHandler
     {
         private readonly IProblemDetailsService _problemDetails;
+        private readonly IHostEnvironment _env;
 
-        public BadRequestExceptionHandler(IProblemDetailsService problemDetails)
+        public GlobalExceptionHandler(IProblemDetailsService problemDetails, IHostEnvironment env)
         {
             _problemDetails = problemDetails;
+            _env = env;
         }
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken ct)
         {
-            if (exception is not BadRequestException bre) return false;
-
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             httpContext.Response.ContentType = "application/problem+json; charset=utf-8";
 
             var problem = new ProblemDetails
             {
-                Status = 400,
-                Title = "Ошибка запроса",
-                Detail = bre.Message
+                Status = 500,
+                Title = "Ошибка сервера",
+                Detail = _env.IsDevelopment()
+                    ? exception.Message
+                    : "Произошла внутренняя ошибка сервера."
             };
 
             await _problemDetails.WriteAsync(new() { HttpContext = httpContext, ProblemDetails = problem });
