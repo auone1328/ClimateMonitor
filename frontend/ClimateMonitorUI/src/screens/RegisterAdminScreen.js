@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CameraView, useCameraPermissions } from "expo-camera";
 
 export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
@@ -51,8 +52,8 @@ export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Регистрация не удалась", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Регистрация не удалась", text);
         return;
       }
 
@@ -72,15 +73,15 @@ export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
 
   if (!permission) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Запрос разрешения на камеру...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Требуется доступ к камере.</Text>
         <Pressable style={styles.primaryBtn} onPress={requestPermission}>
           <Text style={styles.primaryBtnText}>Разрешить</Text>
@@ -88,13 +89,13 @@ export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
         <Pressable style={styles.linkBtn} onPress={onBack}>
           <Text style={styles.linkText}>Назад</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (!scanned) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Сканируйте QR устройства</Text>
         <View style={styles.scannerBox}>
           <CameraView
@@ -106,12 +107,12 @@ export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
         <Pressable style={styles.linkBtn} onPress={onBack}>
           <Text style={styles.linkText}>Назад</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Создать администратора</Text>
       <Text style={styles.sub}>Здание: {qrData.building}</Text>
       <Text style={styles.sub}>Комната: {qrData.room}</Text>
@@ -127,7 +128,7 @@ export default function RegisterAdminScreen({ api, onLoginSuccess, onBack }) {
       <Pressable style={styles.linkBtn} onPress={onBack}>
         <Text style={styles.linkText}>Назад</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }
 

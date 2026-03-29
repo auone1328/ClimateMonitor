@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleLineChart from "./SimpleLineChart";
 
 export default function MeasurementsScreen({ api, room, onBack }) {
@@ -22,8 +23,8 @@ export default function MeasurementsScreen({ api, room, onBack }) {
       const { fromUtc, toUtc } = buildRange();
       const res = await api.request(`/api/rooms/${room.id}/measurements?fromUtc=${encodeURIComponent(fromUtc)}&toUtc=${encodeURIComponent(toUtc)}`);
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Загрузка не удалась", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Загрузка не удалась", text);
         return;
       }
       const data = await res.json();
@@ -61,7 +62,7 @@ export default function MeasurementsScreen({ api, room, onBack }) {
   }, [items]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -115,7 +116,7 @@ export default function MeasurementsScreen({ api, room, onBack }) {
         )}
         ListEmptyComponent={<Text style={styles.empty}>Нет измерений.</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

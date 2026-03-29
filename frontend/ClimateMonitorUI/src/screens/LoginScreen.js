@@ -1,5 +1,6 @@
 ﻿import React, { useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen({ api, onLoginSuccess, onBack }) {
   const [email, setEmail] = useState("");
@@ -19,8 +20,8 @@ export default function LoginScreen({ api, onLoginSuccess, onBack }) {
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Вход не выполнен", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Вход не выполнен", text);
         return;
       }
 
@@ -39,7 +40,7 @@ export default function LoginScreen({ api, onLoginSuccess, onBack }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Вход</Text>
       <TextInput
         style={styles.input}
@@ -62,7 +63,7 @@ export default function LoginScreen({ api, onLoginSuccess, onBack }) {
       <Pressable style={styles.linkBtn} onPress={onBack}>
         <Text style={styles.linkText}>Назад</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }
 

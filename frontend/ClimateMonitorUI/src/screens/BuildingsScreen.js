@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function BuildingsScreen({ api, onOpenBuilding, onOpenNotifications, onOpenAcceptInvite, onLogout }) {
   const [buildings, setBuildings] = useState([]);
@@ -10,8 +11,8 @@ export default function BuildingsScreen({ api, onOpenBuilding, onOpenNotificatio
     try {
       const res = await api.request("/api/buildings");
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Загрузка не удалась", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Загрузка не удалась", text);
         return;
       }
       const data = await res.json();
@@ -26,7 +27,7 @@ export default function BuildingsScreen({ api, onOpenBuilding, onOpenNotificatio
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Здания</Text>
         <View style={styles.headerActions}>
@@ -53,7 +54,7 @@ export default function BuildingsScreen({ api, onOpenBuilding, onOpenNotificatio
         )}
         ListEmptyComponent={<Text style={styles.empty}>Зданий пока нет.</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

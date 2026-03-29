@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const actionMap = {
   SetTemperature: "Установка температуры",
@@ -30,8 +31,8 @@ export default function AuditLogScreen({ api, building, onBack }) {
       const { fromUtc, toUtc } = buildRange();
       const res = await api.request(`/api/buildings/${building.id}/audit?fromUtc=${encodeURIComponent(fromUtc)}&toUtc=${encodeURIComponent(toUtc)}`);
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Загрузка не удалась", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Загрузка не удалась", text);
         return;
       }
       const data = await res.json();
@@ -46,7 +47,7 @@ export default function AuditLogScreen({ api, building, onBack }) {
   }, [building.id, window]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -88,7 +89,7 @@ export default function AuditLogScreen({ api, building, onBack }) {
         )}
         ListEmptyComponent={<Text style={styles.empty}>Журнал пуст.</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

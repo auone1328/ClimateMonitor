@@ -40,5 +40,26 @@ export function createApi({ getAccessToken, getRefreshToken, setTokens }) {
     return res;
   }
 
-  return { request };
+  async function readError(res) {
+    let text = "";
+    try {
+      text = await res.text();
+    } catch {
+      return res.statusText || "Ошибка запроса.";
+    }
+
+    if (!text) return res.statusText || "Ошибка запроса.";
+
+    try {
+      const data = JSON.parse(text);
+      if (data?.detail) return String(data.detail);
+      if (data?.title) return String(data.title);
+    } catch {
+      // not json
+    }
+
+    return text;
+  }
+
+  return { request, readError };
 }

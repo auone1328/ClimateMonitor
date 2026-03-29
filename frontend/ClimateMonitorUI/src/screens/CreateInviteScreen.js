@@ -1,5 +1,6 @@
 ﻿import React, { useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import QRCode from "react-native-qrcode-svg";
 
 const roles = [
@@ -28,8 +29,8 @@ export default function CreateInviteScreen({ api, building, onBack }) {
         body: JSON.stringify({ role: roleValue, expiresInDays: days }),
       });
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Создать не удалось", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Создать не удалось", text);
         return;
       }
       const data = await res.json();
@@ -40,7 +41,7 @@ export default function CreateInviteScreen({ api, building, onBack }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -79,7 +80,7 @@ export default function CreateInviteScreen({ api, building, onBack }) {
           <QRCode value={token} size={200} />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet, TextInput, Alert, Switch } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
   const [measurement, setMeasurement] = useState(null);
@@ -26,8 +27,8 @@ export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
         const data = await dRes.json();
         setDevices(Array.isArray(data) ? data : []);
       } else {
-        const text = await dRes.text();
-        Alert.alert("Не удалось загрузить устройства", text || dRes.statusText);
+        const text = await api.readError(dRes);
+        Alert.alert("Не удалось загрузить устройства", text);
       }
     } finally {
       setLoading(false);
@@ -62,8 +63,8 @@ export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
     });
 
     if (!res.ok) {
-      const text = await res.text();
-      Alert.alert("Не удалось обновить", text || res.statusText);
+      const text = await api.readError(res);
+      Alert.alert("Не удалось обновить", text);
       return;
     }
 
@@ -90,8 +91,8 @@ export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
     });
 
     if (!res.ok) {
-      const text = await res.text();
-      Alert.alert("Не удалось обновить", text || res.statusText);
+      const text = await api.readError(res);
+      Alert.alert("Не удалось обновить", text);
       await load();
       return;
     }
@@ -100,7 +101,7 @@ export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -171,7 +172,7 @@ export default function RoomScreen({ api, room, role, onBack, onOpenHistory }) {
         ))}
         {devices.length === 0 && <Text style={styles.metric}>Устройств нет.</Text>}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

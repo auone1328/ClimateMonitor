@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function NotificationsScreen({ api, onBack }) {
   const [items, setItems] = useState([]);
@@ -10,8 +11,8 @@ export default function NotificationsScreen({ api, onBack }) {
     try {
       const res = await api.request("/api/notifications");
       if (!res.ok) {
-        const text = await res.text();
-        Alert.alert("Загрузка не удалась", text || res.statusText);
+        const text = await api.readError(res);
+        Alert.alert("Загрузка не удалась", text);
         return;
       }
       const data = await res.json();
@@ -31,7 +32,7 @@ export default function NotificationsScreen({ api, onBack }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -50,7 +51,7 @@ export default function NotificationsScreen({ api, onBack }) {
         )}
         ListEmptyComponent={<Text style={styles.empty}>Уведомлений нет.</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

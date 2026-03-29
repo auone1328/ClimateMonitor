@@ -1,9 +1,10 @@
 ﻿import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function WelcomeScreen({ onLogin, onRegisterAdmin, onAcceptInvite }) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Умный климат</Text>
       <Text style={styles.sub}>Централизованное управление микроклиматом</Text>
       <Pressable style={styles.primaryBtn} onPress={onLogin}>
@@ -15,7 +16,7 @@ export default function WelcomeScreen({ onLogin, onRegisterAdmin, onAcceptInvite
       <Pressable style={styles.secondaryBtn} onPress={onAcceptInvite}>
         <Text style={styles.secondaryBtnText}>Принять приглашение</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }
 

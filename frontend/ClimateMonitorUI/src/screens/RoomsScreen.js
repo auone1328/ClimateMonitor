@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RoomsScreen({ api, building, onOpenRoom, onOpenInvite, onOpenAudit, onOpenUsers, onBack }) {
   const [rooms, setRooms] = useState([]);
@@ -37,7 +38,7 @@ export default function RoomsScreen({ api, building, onOpenRoom, onOpenInvite, o
   const isAdmin = role === "Admin";
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable onPress={onBack}>
         <Text style={styles.link}>Назад</Text>
       </Pressable>
@@ -75,7 +76,7 @@ export default function RoomsScreen({ api, building, onOpenRoom, onOpenInvite, o
         )}
         ListEmptyComponent={<Text style={styles.empty}>Комнат пока нет.</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

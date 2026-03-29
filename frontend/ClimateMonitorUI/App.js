@@ -59,6 +59,14 @@ export default function App() {
     await clearTokens();
   }
 
+  function safeGoBack(navigation, fallback) {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+    if (fallback) navigation.navigate(fallback);
+  }
+
   if (!ready) return null;
 
   return (
@@ -159,8 +167,8 @@ export default function App() {
                 {...props}
                 api={api}
                 isAuthenticated
-                onInviteAccepted={() => props.navigation.goBack()}
-                onBack={() => props.navigation.goBack()}
+                onInviteAccepted={() => safeGoBack(props.navigation, "Buildings")}
+                onBack={() => safeGoBack(props.navigation, "Buildings")}
               />
             )}
           </Stack.Screen>
@@ -203,7 +211,7 @@ export default function App() {
                 {...props}
                 api={api}
                 onLoginSuccess={handleLogin}
-                onBack={() => props.navigation.goBack()}
+                onBack={() => safeGoBack(props.navigation, "Welcome")}
               />
             )}
           </Stack.Screen>
